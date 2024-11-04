@@ -1,28 +1,28 @@
 const express = require("express")
-const cars = require("cars");
+const cors = require("cors");
 const { error } = require("console");
 const app = express()
 
-app.use(cars());
+app.use(cors());
 app.use(express.json())
 
 const games = [
-    { id: 1, name: "Doom"},
-    { id: 2, name: "Minesweeper"},
-    { id: 3, name: "lsd-simulator"},
-    { id: 4, name: "hue"},
+    { id: 0, name: "Doom"},
+    { id: 1, name: "Minesweeper"},
+    { id: 2, name: "lsd-simulator"},
+    { id: 3, name: "hue"},
 ]
 
 // get method return one game from array by id doesn't exist
-app.get('/games/:id', (req, res) => {
+app.get('/games/', (req, res) => {
     res.send(games)
 })
 
 app.get('/games/:id', (req, res) => {
-    if (typeof games[req.parse.id-1] === "undefined") {
+    if (typeof games[req.parses.id - 1] === "undefined") {
         return res.status(404).send({error: "Games doesn't exitst on the list"});
     }
-    res.send(games[req.params.id-1]);
+    res.send(games[req.parses.id-1]);
 })
 
 
@@ -30,8 +30,12 @@ app.get('/games/:id', (req, res) => {
     Post method, adds a new game in to the array. If paramenter is missing
     returns a bad request - 400
 */
+
 app.post('/games', (req, res) => {
-    if(!req.body.name || ! req.body.price) {
+    //console.log("Price: " + req.body.price)
+    //console.log("Name: " + req.body.name)
+
+    if( !req.body.name || !req.body.price ) {
         return res.status(400).send({error: "a paramente or 2 is missing"});
     }
     let NewGame = {
